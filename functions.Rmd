@@ -2,17 +2,14 @@
 title: "Functions - Pre-Class Work"
 author: "Adam J Sullivan"
 date: "September 29, 2017"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-
-
-
-
 
 
 
@@ -98,12 +95,10 @@ bmi     Body Mass Index
 A. Create a function called standardize.me() that takes a numeric vector as an argument, and returns the standardized version of the vector. 
 ```{r}
 standardize.me <- function(x) {
-  for (i in seq_along(x)) {
     avg <- mean(x, na.rm=TRUE)
     st.dt <- sd(x, na.rm=TRUE)
-    x[i] <- (x[i]-avg)/st.dt
-  }
-  x
+    x <- (x-avg)/st.dt
+    return(x)
 }
 
 # Test if function works
@@ -130,11 +125,31 @@ for (j in 1:ncol(WCGS.new)) {
 D. What should the mean and standard deviation of all your new standardized variables be? Test your prediction by running a loop
 The mean should be 0 and the standard deviation should be 1. 
 ```{r}
+# Assuming the question is asking for the mean and variance of each standardized variable
+suppressMessages(library(purrr))
+map_dbl(WCGS.new, mean, na.rm=TRUE)
+map_dbl(WCGS.new, sd, na.rm=TRUE)
+```
+
+```{r}
+# Alternative way to do this
 for (i in 1:ncol(WCGS.new)) {
-  print(names(WCGS.new)[i])
-  print(mean(WCGS.new[,i], na.rm = TRUE))
-  print(sd(WCGS.new[,i], na.rm=TRUE))
+  print(names(WCGS.new)[[i]])
+  print(mean(WCGS.new[[i]], na.rm = TRUE))
+  print(sd(WCGS.new[[i]], na.rm=TRUE))
 }
+
+```
+
+```{r}
+# Assuming the question is asking for the mean and variance of all standardized variable together
+col_avg <- map_dbl(WCGS.new, mean, na.rm=TRUE)
+tot_avg <- mean(col_avg, na.rm=TRUE)
+col_sd <- map_dbl(WCGS.new, sd, na.rm=TRUE)
+tot_sd <- mean(col_sd, na.rm=TRUE)
+print(tot_avg)
+print(tot_sd)
+
 
 ```
 
